@@ -1,0 +1,271 @@
+﻿<div id="LoginPartialView">
+<style>
+
+    .tblCenter {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px
+    }
+
+    td {
+        padding: 5px
+    }
+</style>
+
+<h2 id="heading"><center>Login</center></h2>
+
+<table id="tbl_LoginFeilds" class="tblCenter">
+    <tr>
+        <td>
+            <center> <b>Email </b> </center>
+        </td>
+        <td>
+            <input type="text" name="email" id="tb_emailLogin" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Password </b>
+        </td>
+        <td>
+            <input type="password" name="password" id="tb_passwordLogin" />
+        </td>
+    </tr>
+</table>
+
+<table id="tbl_RegisterFeilds" class="tblCenter">
+    <tr>
+        <td>
+            <center> <b>Email </b> </center>
+        </td>
+        <td>
+            <input type="text" id="tb_emailRegister" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Password </b>
+        </td>
+        <td>
+            <input type="password" id="tb_passwordRegister" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>User Name </b>
+        </td>
+        <td>
+            <input type="text" id="tb_UserNameRegister" />
+        </td>
+    </tr>
+    <tr id="tr_DepartmentRow">
+        <td>
+            <b>Department </b>
+        </td>
+        <td>
+            <select id="dd_DepartmentRegister">
+                <option value="0" selected hidden>Choose here</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Physiotherapist">Physiotherapist</option>
+                <option value="Dentist">Dentist</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<table id="tbl_Roles" class="tblCenter">
+    <caption style="font:bold"><center>Register As?</center></caption>
+    <tr>
+        <td>
+            <input type="button" id="bt_Doctor" value="Doctor" style="padding: 15px; width: 250px ;border-color: black; border-style: solid; border-radius: 10px" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" id="bt_Patient" value="Patient" style="padding: 15px; width: 250px;border-color: black; border-style: solid; border-radius: 10px" />
+        </td>
+    </tr>
+</table>
+
+
+<table id="tbl_Buttons" class="tblCenter">
+    <tr>
+        <td style="padding : 5px">
+            <center><input type="button" id="bt_Submit" value="Login" style="padding: 5px;border-color: black; border-style: solid; border-radius: 10px" /></center>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding : 5px">
+            <center> <input type="button" id="bt_New" value="New ? Register Here" style="padding: 5px;border-color: black; border-style: solid; border-radius: 10px" /></center>
+        </td>
+    </tr>
+</table>
+
+<table>
+</table>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+
+        $(document).ready(function () {
+
+            var bt_New = $('#bt_New');
+            var bt_Submit = $('#bt_Submit');
+            var bt_Doctor = $('#bt_Doctor');
+            var bt_Patient = $('#bt_Patient');
+
+            var heading = $('#heading');
+
+            var tbl_Login = $('#tbl_LoginFeilds');
+            var tbl_Register = $('#tbl_RegisterFeilds');
+            var tbl_Buttons = $('#tbl_Buttons');
+            var tbl_Roles = $('#tbl_Roles');
+
+            var tr_DepartmentRow = $('#tr_DepartmentRow');
+            var tb_emailLogin = $('#tb_emailLogin');
+            var tb_passwordLogin = $('#tb_passwordLogin');
+
+            var tb_passwordRegister = $('#tb_passwordRegister');
+            var tb_nameRegister = $('#tb_UserNameRegister');
+            var tb_emailRegister = $('#tb_emailRegister');
+            var dd_Departments = $('#dd_DepartmentRegister');
+
+
+
+            tbl_Roles.hide();
+            tbl_Register.hide();
+            $("input:text").val('');
+            tb_passwordRegister.val('');
+
+
+            bt_New.click(function () {
+
+
+                if (bt_New.val().toString() == "New ? Register Here") {
+
+                    showRegister();
+
+                }
+                else if (bt_New.val().toString() == "Cancel") {
+
+                    tbl_Register.hide();
+                    dd_Departments.val(0);
+                    showLogin();
+                }
+                else {
+
+                    showLogin();
+                }
+
+            });
+
+            bt_Doctor.click(function () {
+
+                tr_DepartmentRow.show();
+                tbl_Register.show();
+                bt_New.val('Cancel');
+                tbl_Roles.hide();
+                bt_Submit.show();
+            });
+
+            bt_Patient.click(function () {
+
+                tbl_Register.show();
+                tr_DepartmentRow.hide();
+                tbl_Roles.hide();
+                bt_New.val('Cancel');
+                bt_Submit.show();
+            });
+
+            bt_Submit.click(function () {
+
+                $("#Splash").fadeIn();
+
+                if (bt_Submit.val().toLowerCase() == "login") {
+
+                    var url = "@Url.Action("Index","Login")";
+
+                    $.post(url, { email: tb_emailLogin.val(), password: tb_passwordLogin.val() }, function (res) {
+
+                        if (res == 0) {
+
+                            $("#Splash").fadeOut();
+                            alert("Wrong ID or Password");
+                        }
+                        else {
+
+                            $("#Splash").fadeOut();
+                            window.location.href = "/User/Index/" + res;
+                            $("input:text").val('');
+                            tb_passwordRegister.val('');
+                        }
+
+                    });
+
+
+                   
+                }
+                else {
+
+                    if (dd_Departments.val() == 0) {
+
+                        var model = { name: tb_nameRegister.val(), email: tb_emailRegister.val(), password: tb_passwordRegister.val() };
+                    }
+                    else {
+
+                        var model = { name: tb_nameRegister.val(), email: tb_emailRegister.val(), password: tb_passwordRegister.val(), department: dd_Departments.val() };
+                    }
+
+                    $.ajax({
+
+                        url: "/Login/Create",
+                        type: "POST",
+                        dataType: 'JSON',
+                        data: model,
+                        success: function (response) {
+
+                            var res = JSON.parse(response);
+                          
+                            if (res != "Success") {
+
+                                $("#Splash").fadeOut();
+                                alert(res);                                
+                            }
+
+                            window.location.href = "/Login/Index";
+
+                            $("input:text").val('');
+                            tb_passwordRegister.val('');
+                            $("#Splash").fadeOut();
+                        }
+
+                    });
+
+                }
+            });
+
+            function showRegister() {
+
+                bt_Submit.hide();
+                tbl_Roles.show();
+                tbl_Login.hide();
+                bt_New.val("Already Registered ? Login here");
+                heading.html("<center>Register<center>");
+                bt_Submit.val('Register');
+
+            }
+
+            function showLogin() {
+
+                bt_New.val("New ? Register Here");
+                bt_Submit.show();
+                tbl_Roles.hide();
+                tbl_Login.show();
+                heading.html("<center>Login<center>");
+                bt_Submit.val('Login');
+
+            }
+        });
+
+</script>

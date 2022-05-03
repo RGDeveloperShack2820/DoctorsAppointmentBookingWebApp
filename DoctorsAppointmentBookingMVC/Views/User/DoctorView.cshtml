@@ -1,0 +1,81 @@
+﻿@model DoctorsAppointmentModelLibrary.MVCModels.UserMVC
+
+<style>
+
+    .tblCenter1 {
+        margin-left: 65px;
+        margin-right: 65px;
+    }
+</style>
+<h2 id="headingUser"><center>Appointments Table</center></h2>
+<div class="tblCenter1">
+    <table id="tbl_App" class="table" style="font-size:15px">
+
+        <tr>
+            <th>
+                 @Html.DisplayNameFor(model => model.appointments[0].doctor.name)
+            </th>
+            <th>
+                 @Html.DisplayNameFor(model => model.appointments[0].time)
+            </th>
+            <th>
+                Operations
+            </th>
+
+        </tr>
+
+
+        @foreach (var item in Model.appointments)
+        {
+            if (item.doctor.id == Model.id)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.patient.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.time)
+                    </td>
+                    @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                        </td>*@
+
+                    <td>
+                        <button class="form-control CancelAppointment" data-id="@item.id"><b>Cancel</b></button>
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var bt_Cancel = $('.CancelAppointment');
+    
+
+        bt_Cancel.click(function () {
+
+                $.ajax({
+
+                    url: "/User/Delete/" + $(this).attr("data-id"),
+                    type: "POST",
+                    success: function (response) {
+
+                        alert("Deleted");
+                        location.reload(true);
+                    }
+                });
+           
+        });
+
+    });
+</script>
+

@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="~/CssFiles/LoginPage.css">
+<div id="LoginIndex">
+    <div id="Splash">
+        <img src="../Assets/loading.gif" alt="" width="50" height="50">
+    </div>
+
+    <div id="LoginLHS">
+    </div>
+
+    <div id="LoginRHS">
+        @Html.Partial("LoginHomePartial")
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(window).on('load', function () {
+        $("#Splash").fadeOut();
+    });
+</script>
+

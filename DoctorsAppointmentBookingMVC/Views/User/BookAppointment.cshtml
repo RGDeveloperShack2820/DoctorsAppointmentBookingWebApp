@@ -1,0 +1,151 @@
+﻿<style>
+
+    td {
+        padding: 5px
+    }
+</style>
+
+<input type="hidden" id="patientId" value="@ViewData["id"]" />
+
+<table id="tbl_BookNew" style="font-size:18px; margin-top:100px;margin-left: 100px">
+    <tr>
+        <td>
+            <label for="dd_DepartmentBook">Departments : </label>
+        </td>
+        <td>
+            <select id="dd_DepartmentBook">
+                <option value=0 selected hidden>Choose here</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Physiotherapist">Physiotherapist</option>
+                <option value="Dentist">Dentist</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="dd_DoctorBook">Doctors : </label>
+        </td>
+        <td>
+            <select id="dd_DoctorBook">
+                <option value=0 selected hidden>Choose Department Above</option>
+            </select>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="TimePicker">Appointment Date & Time: </label>
+        </td>
+
+        <td>
+            <input type="datetime-local" id="TimePicker" name="TimePicker">
+        </td>
+
+    </tr>
+    <tr style="height: 300px">
+        <td>
+            <center> <button id="bt_CancelBook" style="border-color: black; border-style: solid; border-radius: 10px;"><b>Cancel</b></button></center>
+        </td>
+        <td>
+            <center><button id="bt_Book" style="border-color: black; border-style: solid; border-radius: 10px;"><b>Book</b></button></center>
+        </td>
+    </tr>
+</table>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var list;
+        var bt_Book = $('#bt_Book');
+        var heading = $('#headingUser');
+        var tbl_BookNew = $('#tbl_BookNew');
+        var bt_Cancel = $('#bt_CancelBook');
+        var tbl_Appointments = $('#tbl_App');
+
+        $.ajax({
+
+            url: "/User/GetDoctors",
+            type: "GET",
+            success: function (response) {
+
+                list = JSON.parse(response);
+            }
+        });
+
+        heading.html('<center>Book Appointment</center>');
+
+        bt_Cancel.click(function () {
+
+            location.reload(true);
+
+
+        });
+
+        bt_Book.click(function () {
+
+            if (($('#dd_DoctorBook').val() != 0) && ($('#dd_DepartmentBook').val() != 0) && ($('#TimePicker').val() != "")) {
+
+
+
+                var url = "@Url.Action("Book", "User")";
+
+                $.post(url, { doctorId: $('#dd_DoctorBook').val(), patientId: $('#patientId').val(), dateTime: $('#TimePicker').val() }, function (res) {
+
+                    if (res != -1) {
+
+                        //$('#tbl_App').append('<tr><td>' + $('#dd_DoctorBook').html() + '</td><td>'
+                        //                    + $('#dd_DepartmentBook').html() + '</td><td>'
+                        //                    + $('#TimePicker').val() + '</td><td><button class="form-control editApp" data-id="'
+                        //                    + res + '"><b>Edit</b></button></td><td><button class="form-control CancelApp" data-id="'
+                        //                    + res + '"><b>Cancel</b></button></td></tr>');
+
+
+                        location.reload(true);
+                    }
+
+                    else
+                        alert("Error");
+
+                });
+            }
+            else {
+
+                alert("Fill Details Properly");
+               
+            }
+        });
+
+        $('#dd_DoctorBook').change(function () {
+
+            alert($('#dd_DoctorBook').val());
+
+
+
+        });
+
+        $('#dd_DepartmentBook').change(function () {
+
+            var x = 0;
+            $('#dd_DoctorBook').html('');
+
+            $.each(list, function (index, value) {
+
+                if ($('#dd_DepartmentBook').val() == value.department) {
+
+                    x++;
+                    $('#dd_DoctorBook').append('<option value=' + value.id + '>'+value.name+'</option>');
+                }
+
+            });
+
+            if (x == 0)
+                $('#dd_DoctorBook').html('<option value=0 selected hidden>No Doctors Found</option>');
+
+        });
+
+    });
+
+</script>

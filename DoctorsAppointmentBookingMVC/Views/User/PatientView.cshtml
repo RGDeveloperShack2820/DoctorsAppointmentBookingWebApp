@@ -1,0 +1,142 @@
+﻿@model DoctorsAppointmentModelLibrary.MVCModels.UserMVC
+
+<style>
+
+    .tblCenter1 {
+        margin-left: 65px;
+        margin-right: 65px;
+    }
+</style>
+
+<input type="hidden" id="modal" value=@Model.id />
+
+<h2 id="headingUser"><center>Appointments Table</center></h2>
+<div id="ajaxdiv" style="text-align:center">
+    <div class="tblCenter1">
+        <table id="tbl_App" class="table" style="font-size:15px">
+            <tr style="height:100px">
+                <td colspan="5" style="text-align:center; padding-top:35px">
+                    <button id="bt_BookNew" style="padding:5px;width: 100%;border-color: black; border-style: solid; border-radius: 10px;"><b>Book New</b></button>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <center>Doctor</center>
+                </th>
+                <th>
+                    <center> @Html.DisplayNameFor(model => model.appointments[0].doctor.department)</center>
+                </th>
+                <th>
+                    <center>  @Html.DisplayNameFor(model => model.appointments[0].time)</center>
+                </th>
+                <th>
+                    <center> Operations</center>
+                </th>
+               
+            </tr>
+
+
+            @foreach (var item in Model.appointments)
+            {
+
+                if (item.patient.id == Model.id)
+                {
+
+
+                    <tr>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doctor.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doctor.department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.time)
+                        </td>
+                      
+                        
+                        <td>
+                            <button class="form-control CancelApp" data-id="@item.id"><b>Cancel</b></button>
+                        </td>
+                    </tr>
+
+                }
+
+
+            }
+
+        </table>
+
+
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var heading = $('#headingUser');
+        var bt_BookNew = $('#bt_BookNew');
+       
+        var bt_Cancel = $('#bt_CancelBook');
+        var tbl_Appointments = $('#tbl_App');
+        var tbl_BookNew = $('#tbl_BookNew');
+            
+       
+        var modal = $('#modal').val();
+
+        tbl_BookNew.hide();
+
+        bt_BookNew.click(function () {
+
+            //tbl_Appointments.hide();
+            //heading.html('<center>Book Appointment</center>');
+            //tbl_BookNew.show();
+           
+            
+
+
+
+            $.ajax({
+
+                url: "/User/Book/" + modal,
+                type: "GET",
+                success: function (response) {
+
+                    $('#ajaxdiv').html(response);
+                }
+            });
+
+        });
+
+        bt_Cancel.click(function () {
+
+            tbl_Appointments.show();
+            heading.html('<center>Appointments Table</center>');
+            tbl_BookNew.hide();
+
+
+        });
+
+       
+
+        $('.CancelApp').click(function () {
+
+            $.ajax({
+
+                url: "/User/Delete/" + $(this).attr("data-id"),
+                type: "POST",
+                success: function (response) {
+
+                    alert("Deleted");
+                    location.reload(true);
+                }
+            });
+        });
+
+    });
+</script>
+

@@ -1,0 +1,128 @@
+﻿@model DoctorsAppointmentModelLibrary.MVCModels.UserMVC
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .tblCenter {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px
+    }
+
+    td {
+        padding: 5px
+    }
+
+    #SplashUser {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        justify-content: center;
+        display: flex;
+        align-items: center
+    }
+</style>
+
+
+<link rel="stylesheet" href="~/CssFiles/UserPage.css">
+<input type="hidden" id="modalName" value=@Model.name />
+<input type="hidden" id="modalId" value=@Model.id />
+<input type="hidden" id="modalEmail" value=@Model.email />
+<input type="hidden" id="modalDepartment" value=@Model.department />
+
+
+
+<div id="SplashUser">
+    <img src="~/Assets/loading.gif" alt="" width="50" height="50">
+</div>
+
+
+
+<div id="UserLHS">
+    <h2><center>Profile Details</center></h2>
+
+    <table class="tblCenter" style="font-size:18px">
+        <tr>
+            <td>
+                Name : <label id="lbl_UserName"></label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email : <label id="lbl_Email" style="font-size:15px"></label>
+            </td>
+
+        </tr>
+        <tr id="tr_Department">
+            <td>
+                Department : <label id="lbl_Department"></label>
+            </td>
+
+        </tr>
+        <tr style="height:200px">
+            <td>
+            <center><button id="bt_Logout" style="border-color: black; border-style: solid; border-radius: 10px;"><b>Logout</b></button></center>
+                </td>
+        </tr>
+
+    </table>
+
+</div>
+
+
+<div id="UserRHS">
+    @if (Model.department == null)
+        {
+            @Html.Partial("PatientView",Model)
+
+        }
+        else
+        {
+            @Html.Partial("DoctorView",Model)
+
+        }
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+
+    $(window).on('load', function () {
+        $("#Splash").fadeOut();
+        $("#SplashUser").fadeOut();
+    });
+
+    $(document).ready(function () {
+
+        var UserName = $('#lbl_UserName');
+        var Email = $('#lbl_Email');
+        var Department = $('#lbl_Department');
+        var ModalName = $('#modalName').val();
+        var ModalEmail = $('#modalEmail').val();
+        var ModalDepartment = $('#modalDepartment').val();
+        var tr_Department = $('#tr_Department');
+        var bt_Logout = $('#bt_Logout');
+
+        tr_Department.hide();
+
+        UserName.html(ModalName);
+        Email.html(ModalEmail);
+        Department.html(ModalDepartment);
+
+
+        bt_Logout.click(function () {
+
+            window.location.href = "@Url.Action("Logout","User")"
+        });
+
+        if (ModalDepartment != "") {
+
+            tr_Department.show();
+        }
+    });
+</script>
+
+
+

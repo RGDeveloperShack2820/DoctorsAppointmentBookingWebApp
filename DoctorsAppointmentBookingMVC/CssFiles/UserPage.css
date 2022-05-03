@@ -1,0 +1,21 @@
+﻿#UserLHS {
+    float: left;
+    height: 500px;
+    width: 30%;
+    margin: 10px;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 10px;
+}
+
+#UserRHS {
+    float: right;
+    height: 500px;
+    width: 66%;
+    margin: 10px;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 10px;
+}
