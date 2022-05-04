@@ -7,9 +7,11 @@ An ASP.NET MVC Web Application Using SQL Server Database.
 
 • SQL Server database integration using Code-First Enitiy Framework approach.
 
- **Functionalities**
+>> **Functionalities**
  
- such as Dynamic User Registrations & User Logins for doctors & patients.
+• Dynamic User Registrations & User Logins for doctors & patients.
+• Appointment Booking functionality for patients via doctor's depatments, Names & Appointment Time.
+• Custom Appointments Dashboard for both Doctors & Patients.
 
 
 
