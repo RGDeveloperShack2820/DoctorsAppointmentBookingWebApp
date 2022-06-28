@@ -6,14 +6,14 @@
 
 • Complex UI elements such as Partial views, dynamic AJAX UI modifications etc.
 
-• SQL Server database integration own WEB API for CRUD using Code-First Enitiy Framework approach.
+• SQL Server database integration own WEB API for CRUD using Code-First Enitity Framework approach.
 
 
 >> **Functionalities**
  
 • Dynamic User Registrations & User Logins for doctors & patients.
 
-• Appointment Booking functionality for patients via doctor's depatments, Names & Appointment Time.
+• Appointment Booking functionality for patients via doctor's departments, Names & Appointment Time.
 
 • Custom Appointments Dashboard for both Doctors & Patients.
 
