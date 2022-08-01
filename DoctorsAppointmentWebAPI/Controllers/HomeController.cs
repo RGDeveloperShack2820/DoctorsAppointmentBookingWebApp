@@ -21,15 +21,6 @@ namespace DoctorsAppointmentWebAPI.Controllers
             return View();
         }
 
-        public ActionResult GetUser()
-        {
-            ViewBag.Title = "Home Page";
-            User user=new User();
-            user = doctorsAppointmentDBContext.Users.FirstOrDefault(u=>(u.email=="rohitgupta@gmail.com")&&(u.password== "rohit1234"));
-                
-            
-
-            return View(user);
-        }
+       
     }
 }

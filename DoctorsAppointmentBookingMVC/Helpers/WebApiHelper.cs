@@ -4,6 +4,7 @@ using DoctorsAppointmentModelLibrary.MVCModels;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace DoctorsAppointmentBookingMVC.Helpers
 {
@@ -15,7 +16,7 @@ namespace DoctorsAppointmentBookingMVC.Helpers
         
         public WebApiHelper()
         {
-            apiBaseAddress = new Uri("https://localhost:44370/api/");
+            apiBaseAddress = new Uri(ConfigurationManager.AppSettings["WebApiUrl"]);
             restClient = new RestClient(apiBaseAddress);
         }
 
